@@ -132,11 +132,11 @@ export default function TrainingAcademy({ onApplySubmit }: TrainingAcademyProps)
             <div className="lg:col-span-4 bg-white/5 backdrop-blur-md rounded-2xl border border-white/15 p-6 space-y-4">
               <span className="text-gold-accent font-mono text-5xl font-bold leading-none block">“</span>
               <p className="font-sans text-sm text-gray-100 italic font-light leading-relaxed">
-                "Our B2C programs help individuals develop professional standards that guarantee immediate jobs upon graduation. We are not just a placement house; we create highly valued, dignified careers."
+                "Take control of your future and avoid unemployment. Enroll in our professional maid training program today and choose a dignified career."
               </p>
               <div className="border-t border-white/10 pt-3">
-                <p className="font-display text-xs font-bold text-white uppercase tracking-wider">Placement Director</p>
-                <p className="font-sans text-[11px] text-gray-300">Smart Maids ZW Academy</p>
+                <p className="font-display text-xs font-bold text-white uppercase tracking-wider">Admissions Council</p>
+                <p className="font-sans text-[11px] text-gray-300">Smart Maids ZW Academy Campaigns</p>
               </div>
             </div>
 
@@ -214,7 +214,7 @@ export default function TrainingAcademy({ onApplySubmit }: TrainingAcademyProps)
           
           <div className="bg-white rounded-3xl border border-gray-200 shadow-xl overflow-hidden">
             
-            <div className="bg-gradient-to-r from-royal-blue to-blue-800 text-white p-8 relative">
+            <div className="bg-gradient-to-r from-royal-blue to-royal-dark text-white p-8 relative">
               <div className="absolute top-4 right-4 h-14 w-14 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
                 <Award className="h-7 w-7 text-gold-accent" />
               </div>

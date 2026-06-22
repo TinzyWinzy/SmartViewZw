@@ -420,7 +420,7 @@ export default function AdminPortal({
                             onChange={(e) => onUpdateApplicationStatus(a.id, e.target.value as any)}
                             className={`px-2.5 py-1 rounded-lg border font-bold text-[10px] uppercase font-mono bg-white focus:outline-none ${
                               a.status === 'submitted' ? 'text-amber-800 border-amber-300 bg-amber-50' :
-                              a.status === 'interviewing' ? 'text-blue-800 border-blue-300 bg-blue-50' :
+                              a.status === 'interviewing' ? 'text-cyan-800 border-cyan-300 bg-cyan-50' :
                               a.status === 'enrolled' ? 'text-teal-800 border-teal-300 bg-teal-50' :
                               a.status === 'completed' ? 'text-emerald-800 border-emerald-300 bg-emerald-50' :
                               'text-rose-800 border-rose-300 bg-rose-50'

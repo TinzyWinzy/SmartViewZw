@@ -123,7 +123,7 @@ export default function Header({ activeTab, setActiveTab, onBookClick }: HeaderP
                   onBookClick();
                 }, 100);
               }}
-              className="flex items-center space-x-2 rounded-full bg-royal-blue hover:bg-royal-dark px-6 py-2.5 font-sans text-xs font-bold uppercase tracking-widest text-white tracking-[0.05em] shadow-lg shadow-blue-100 transition duration-200 active:scale-98"
+              className="flex items-center space-x-2 rounded-full bg-royal-blue hover:bg-royal-dark px-6 py-2.5 font-sans text-xs font-bold uppercase tracking-widest text-white tracking-[0.05em] shadow-lg shadow-slate-200 transition duration-200 active:scale-98"
             >
               <PhoneCall className="h-3.5 w-3.5" />
               <span>Book a Maid</span>

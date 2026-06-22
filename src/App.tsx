@@ -20,6 +20,8 @@ import AdminPortal from './components/AdminPortal';
 
 import { BookingInquiry, TrainingApplication, ServiceType } from './types';
 import { SERVICE_AREAS } from './data';
+import { db } from './firebase';
+import { collection, doc, setDoc, updateDoc, deleteDoc, onSnapshot, getDocs, writeBatch } from 'firebase/firestore';
 
 // Initial Seed Data for Instant Demonstration
 const INITIAL_BOOKINGS: BookingInquiry[] = [
@@ -110,75 +112,167 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<'landing' | 'academy' | 'admin'>('landing');
   const [selectedServiceId, setSelectedServiceId] = useState<ServiceType | null>(null);
 
-  // Persistence States
-  const [bookings, setBookings] = useState<BookingInquiry[]>(() => {
-    const saved = localStorage.getItem('smartmaids_bookings');
-    return saved ? JSON.parse(saved) : INITIAL_BOOKINGS;
-  });
+  // Persistence States synced real-time with Firebase Firestore
+  const [bookings, setBookings] = useState<BookingInquiry[]>([]);
+  const [applications, setApplications] = useState<TrainingApplication[]>([]);
+  const [dbLoading, setDbLoading] = useState(true);
 
-  const [applications, setApplications] = useState<TrainingApplication[]>(() => {
-    const saved = localStorage.getItem('smartmaids_applications');
-    return saved ? JSON.parse(saved) : INITIAL_APPLICATIONS;
-  });
-
-  // Keep localStorage updated
+  // Set up real-time Firebase listeners with automatic initial seeding if database is empty
   useEffect(() => {
-    localStorage.setItem('smartmaids_bookings', JSON.stringify(bookings));
-  }, [bookings]);
+    const bookingsRef = collection(db, 'bookings');
+    const unsubscribeBookings = onSnapshot(bookingsRef, async (snapshot) => {
+      if (snapshot.empty) {
+        console.log("Seeding initial bookings to Firestore...");
+        try {
+          const batch = writeBatch(db);
+          INITIAL_BOOKINGS.forEach((item) => {
+            const docRef = doc(db, 'bookings', item.id);
+            batch.set(docRef, item);
+          });
+          await batch.commit();
+        } catch (error) {
+          console.error("Error seeding initial bookings:", error);
+        }
+      } else {
+        const fetchedBookings: BookingInquiry[] = [];
+        snapshot.forEach((doc) => {
+          fetchedBookings.push(doc.data() as BookingInquiry);
+        });
+        fetchedBookings.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        setBookings(fetchedBookings);
+      }
+    });
 
-  useEffect(() => {
-    localStorage.setItem('smartmaids_applications', JSON.stringify(applications));
-  }, [applications]);
+    const appsRef = collection(db, 'academy_applications');
+    const unsubscribeApps = onSnapshot(appsRef, async (snapshot) => {
+      if (snapshot.empty) {
+        console.log("Seeding initial applications to Firestore...");
+        try {
+          const batch = writeBatch(db);
+          INITIAL_APPLICATIONS.forEach((item) => {
+            const docRef = doc(db, 'academy_applications', item.id);
+            batch.set(docRef, item);
+          });
+          await batch.commit();
+        } catch (error) {
+          console.error("Error seeding initial applications:", error);
+        }
+      } else {
+        const fetchedApps: TrainingApplication[] = [];
+        snapshot.forEach((doc) => {
+          fetchedApps.push(doc.data() as TrainingApplication);
+        });
+        fetchedApps.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        setApplications(fetchedApps);
+      }
+      setDbLoading(false);
+    });
 
-  // Actions for Booking Submission
-  const handleBookingSubmit = (newBookingData: Omit<BookingInquiry, 'id' | 'createdAt' | 'status'>) => {
+    return () => {
+      unsubscribeBookings();
+      unsubscribeApps();
+    };
+  }, []);
+
+  // Actions for Booking Submission (directly connected to Firestore)
+  const handleBookingSubmit = async (newBookingData: Omit<BookingInquiry, 'id' | 'createdAt' | 'status'>) => {
+    const bookingId = `booking-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
     const newBooking: BookingInquiry = {
       ...newBookingData,
-      id: `booking-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+      id: bookingId,
       status: 'pending',
       createdAt: new Date().toISOString()
     };
-    setBookings(prev => [newBooking, ...prev]);
+    try {
+      await setDoc(doc(db, 'bookings', bookingId), newBooking);
+    } catch (error) {
+      console.error("Error saving booking inquiry:", error);
+    }
   };
 
-  // Actions for Course Applicatons
-  const handleApplicationSubmit = (newAppData: Omit<TrainingApplication, 'id' | 'createdAt' | 'status'>) => {
+  // Actions for Course Applications (directly connected to Firestore)
+  const handleApplicationSubmit = async (newAppData: Omit<TrainingApplication, 'id' | 'createdAt' | 'status'>) => {
+    const appId = `app-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
     const newApp: TrainingApplication = {
       ...newAppData,
-      id: `app-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+      id: appId,
       status: 'submitted',
       createdAt: new Date().toISOString()
     };
-    setApplications(prev => [newApp, ...prev]);
+    try {
+      await setDoc(doc(db, 'academy_applications', appId), newApp);
+    } catch (error) {
+      console.error("Error saving training app:", error);
+    }
   };
 
-  // Status updates & edits inside admin workspace
-  const handleUpdateBookingStatus = (id: string, status: BookingInquiry['status']) => {
-    setBookings(prev => prev.map(b => b.id === id ? { ...b, status } : b));
+  // Status updates & edits inside admin workspace (directly in Firestore)
+  const handleUpdateBookingStatus = async (id: string, status: BookingInquiry['status']) => {
+    try {
+      await updateDoc(doc(db, 'bookings', id), { status });
+    } catch (error) {
+      console.error("Error updating booking status:", error);
+    }
   };
 
-  const handleUpdateApplicationStatus = (id: string, status: TrainingApplication['status']) => {
-    setApplications(prev => prev.map(a => a.id === id ? { ...a, status } : a));
+  const handleUpdateApplicationStatus = async (id: string, status: TrainingApplication['status']) => {
+    try {
+      await updateDoc(doc(db, 'academy_applications', id), { status });
+    } catch (error) {
+      console.error("Error updating application status:", error);
+    }
   };
 
-  const handleDeleteBooking = (id: string) => {
+  const handleDeleteBooking = async (id: string) => {
     if (confirm('Are you sure you want to delete this placement inquiry record?')) {
-      setBookings(prev => prev.filter(b => b.id !== id));
+      try {
+        await deleteDoc(doc(db, 'bookings', id));
+      } catch (error) {
+        console.error("Error deleting booking:", error);
+      }
     }
   };
 
-  const handleDeleteApplication = (id: string) => {
+  const handleDeleteApplication = async (id: string) => {
     if (confirm('Are you sure you want to delete this academy application record?')) {
-      setApplications(prev => prev.filter(a => a.id !== id));
+      try {
+        await deleteDoc(doc(db, 'academy_applications', id));
+      } catch (error) {
+        console.error("Error deleting application:", error);
+      }
     }
   };
 
-  const handleResetData = () => {
-    if (confirm('Do you want to restore default demonstrative leads and applications?')) {
-      setBookings(INITIAL_BOOKINGS);
-      setApplications(INITIAL_APPLICATIONS);
+  const handleResetData = async () => {
+    if (confirm('Do you want to restore default demonstrative leads and applications in Firestore?')) {
+      try {
+        const bookingsSnaps = await getDocs(collection(db, 'bookings'));
+        const batch1 = writeBatch(db);
+        bookingsSnaps.forEach((docSnap) => {
+          batch1.delete(docSnap.ref);
+        });
+        INITIAL_BOOKINGS.forEach((item) => {
+          const docRef = doc(db, 'bookings', item.id);
+          batch1.set(docRef, item);
+        });
+        await batch1.commit();
+
+        const appsSnaps = await getDocs(collection(db, 'academy_applications'));
+        const batch2 = writeBatch(db);
+        appsSnaps.forEach((docSnap) => {
+          batch2.delete(docSnap.ref);
+        });
+        INITIAL_APPLICATIONS.forEach((item) => {
+          const docRef = doc(db, 'academy_applications', item.id);
+          batch2.set(docRef, item);
+        });
+        await batch2.commit();
+      } catch (error) {
+        console.error("Error resetting data:", error);
+      }
     }
   };
+
 
   const scrollToBookingForm = () => {
     const section = document.getElementById('booking-section');
@@ -201,6 +295,25 @@ export default function App() {
         setActiveTab={setActiveTab} 
         onBookClick={scrollToBookingForm} 
       />
+
+      {/* Holiday Campaign Notice Scraped from Facebook Page Campaign */}
+      <div className="bg-[#FCF9F2] border-b border-[#EDE3CD] py-3.5 px-4 text-center text-xs text-slate-900 transition-colors duration-200">
+        <div className="mx-auto max-w-7xl flex flex-col md:flex-row justify-center items-center gap-2 md:gap-4 font-sans">
+          <span className="inline-flex items-center gap-1.5 text-gold-dark text-[10px] uppercase tracking-[0.15em] font-extrabold">
+            <span className="h-1.5 w-1.5 rounded-full bg-gold-accent animate-pulse"></span>
+            Special Announcement
+          </span>
+          <span className="text-slate-700 font-display text-sm italic py-0.5">
+            "This holiday season, let us help you find the perfect professional, trained maid to assist with your household needs."
+          </span>
+          <button 
+            onClick={scrollToBookingForm}
+            className="text-royal-blue hover:text-[#0f172a] text-[10px] uppercase tracking-widest font-black underline decoration-1 underline-offset-4 transition"
+          >
+            Hire a Helper &rarr;
+          </button>
+        </div>
+      </div>
 
       {/* Screen Views rendering */}
       <main>
@@ -501,19 +614,28 @@ export default function App() {
               </h4>
               <div className="space-y-3 font-sans text-xs">
                 
-                <div className="flex items-center space-x-2.5">
-                  <Phone className="h-4 w-4 text-royal-blue shrink-0" />
+                <div className="flex items-start space-x-2.5">
+                  <Phone className="h-4 w-4 text-royal-blue shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-slate-300 font-semibold">+263 77 444 9860</p>
-                    <p className="text-[10px] text-slate-500">Call/ WhatsApp (Available 24/7)</p>
+                    <p className="text-slate-300 font-semibold">077 444 9860</p>
+                    <p className="text-slate-400 font-light text-[11px]">+263 77 444 9860</p>
+                    <p className="text-[10px] text-slate-500">Call / WhatsApp Dispatch (24/7)</p>
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-2.5">
-                  <Mail className="h-4 w-4 text-royal-blue shrink-0" />
+                <div className="flex items-start space-x-2.5">
+                  <Mail className="h-4 w-4 text-royal-blue shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-slate-300 font-semibold">info@smartmaids.co.zw</p>
-                    <p className="text-[10px] text-slate-500">General admission &amp; quotes</p>
+                    <p className="text-slate-300 font-semibold">smart.maid@outlook.com</p>
+                    <p className="text-[10px] text-slate-500">Official Intake &amp; Inquiry Email</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-2.5">
+                  <span className="text-royal-blue shrink-0 font-bold ml-1 text-sm mt-[-1px]">f</span>
+                  <div className="ml-1">
+                    <p className="text-slate-300 font-semibold">@smartmaidszw</p>
+                    <p className="text-[10px] text-slate-500">Official Facebook Platform</p>
                   </div>
                 </div>
 

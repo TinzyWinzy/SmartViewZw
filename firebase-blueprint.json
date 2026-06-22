@@ -1,0 +1,47 @@
+{
+  "entities": {
+    "booking": {
+      "title": "Booking",
+      "description": "A placement matching inquiry from an employer household.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "fullName": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "serviceId": { "type": "string" },
+        "frequency": { "type": "string" },
+        "duration": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "contacted", "placed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "fullName", "phone", "email", "serviceId", "frequency", "duration", "status", "createdAt"]
+    },
+    "academy_application": {
+      "title": "Academy Application",
+      "description": "An enrollee application into the training program.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "fullName": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "courseId": { "type": "string" },
+        "experience": { "type": "string" },
+        "stage": { "type": "string", "enum": ["applied", "interviewing", "enrolled"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "fullName", "phone", "email", "courseId", "experience", "stage", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/bookings/{bookingId}": {
+      "schema": "booking",
+      "description": "Store all individual placement matching requests."
+    },
+    "/academy_applications/{applicationId}": {
+      "schema": "academy_application",
+      "description": "Store trainee enrollment programs."
+    }
+  }
+}

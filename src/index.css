@@ -7,9 +7,9 @@
   --font-display-modern: "Outfit", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   
-  --color-royal-blue: #1D4ED8;
-  --color-royal-dark: #1E3A8A;
-  --color-royal-light: #EFF6FF;
+  --color-royal-blue: #29b7be;
+  --color-royal-dark: #1f8b91;
+  --color-royal-light: #f0fbfc;
   --color-gold-accent: #C5A059;
   --color-gold-dark: #A37F3D;
   --color-gold-light: #FDFBF7;
@@ -32,7 +32,7 @@
 }
 
 .royal-gradient {
-  background: linear-gradient(135deg, #1E3A8A 0%, #0F172A 100%);
+  background: linear-gradient(135deg, #020617 0%, #000000 60%, #154547 100%);
 }
 
 .gold-gradient {
