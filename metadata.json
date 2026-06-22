@@ -1,0 +1,6 @@
+{
+  "name": "Smart Maids ZW",
+  "description": "Professional domestic helper placement & training agency in Zimbabwe, specializing in housekeeping, cooking, childcare, and professional certified domestic training.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

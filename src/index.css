@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "Cormorant Garamond", serif;
+  --font-display-modern: "Outfit", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-royal-blue: #1D4ED8;
+  --color-royal-dark: #1E3A8A;
+  --color-royal-light: #EFF6FF;
+  --color-gold-accent: #C5A059;
+  --color-gold-dark: #A37F3D;
+  --color-gold-light: #FDFBF7;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* Custom overlay classes for pristine UI card designs */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(241, 245, 249, 1);
+}
+
+.royal-gradient {
+  background: linear-gradient(135deg, #1E3A8A 0%, #0F172A 100%);
+}
+
+.gold-gradient {
+  background: linear-gradient(135deg, #C5A059 0%, #A37F3D 100%);
+}
+
