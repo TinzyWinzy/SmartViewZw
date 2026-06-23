@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   ShieldCheck, Award, MessageSquare, Compass, CheckCircle, 
@@ -16,7 +16,9 @@ import Services from './components/Services';
 import TrainingAcademy from './components/TrainingAcademy';
 import InteractiveBooking from './components/InteractiveBooking';
 import Testimonials from './components/Testimonials';
-import AdminPortal from './components/AdminPortal';
+import AdminGate from './components/AdminGate';
+
+const AdminPortal = lazy(() => import('./components/AdminPortal'));
 
 import { BookingInquiry, TrainingApplication, ServiceType } from './types';
 import { SERVICE_AREAS } from './data';
@@ -533,15 +535,23 @@ export default function App() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <AdminPortal 
-                bookings={bookings}
-                applications={applications}
-                onUpdateBookingStatus={handleUpdateBookingStatus}
-                onUpdateApplicationStatus={handleUpdateApplicationStatus}
-                onDeleteBooking={handleDeleteBooking}
-                onDeleteApplication={handleDeleteApplication}
-                onResetData={handleResetData}
-              />
+              <AdminGate>
+                <Suspense fallback={
+                  <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+                    <div className="h-8 w-8 animate-spin rounded-full border-2 border-royal-blue border-t-transparent" />
+                  </div>
+                }>
+                  <AdminPortal 
+                    bookings={bookings}
+                    applications={applications}
+                    onUpdateBookingStatus={handleUpdateBookingStatus}
+                    onUpdateApplicationStatus={handleUpdateApplicationStatus}
+                    onDeleteBooking={handleDeleteBooking}
+                    onDeleteApplication={handleDeleteApplication}
+                    onResetData={handleResetData}
+                  />
+                </Suspense>
+              </AdminGate>
             </motion.div>
           )}
         </AnimatePresence>

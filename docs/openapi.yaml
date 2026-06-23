@@ -1,0 +1,296 @@
+openapi: "3.0.3"
+info:
+  title: Smart Maids ZW — Firestore API
+  description: >
+    RESTful mapping of the Smart Maids ZW Firestore collections.
+    The application is a React SPA that reads/writes directly to Cloud Firestore
+    via the Firebase Web SDK. This spec documents the data models and operations
+    as if they were REST endpoints for integration and documentation purposes.
+  version: "1.0.0"
+  contact:
+    name: Smart Maids ZW Agency
+    url: https://smartviewzw.vercel.app
+
+servers:
+  - url: https://firestore.googleapis.com/v1/projects/studio-1786310527-e2fad/databases/(default)/documents
+    description: Firestore REST API (auto-provisioned project)
+
+components:
+  securitySchemes:
+    firebaseAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: "Firebase ID token (Bearer token). The SPA uses the Firebase Auth SDK internally."
+
+  schemas:
+    BookingInquiry:
+      type: object
+      required:
+        - clientName
+        - email
+        - phone
+        - location
+        - serviceNeeded
+        - frequency
+      properties:
+        id:
+          type: string
+          description: Auto-generated unique ID (e.g. "booking-1712345678900-abc12")
+          example: "booking-1712345678900-abc12"
+        clientName:
+          type: string
+          description: Full name of the employer
+          example: "Dr. Brandon Tino"
+        email:
+          type: string
+          format: email
+          example: "brandontinoz@gmail.com"
+        phone:
+          type: string
+          description: Zimbabwe mobile number with country code
+          example: "+263 77 444 9860"
+        location:
+          type: string
+          description: Service area / suburb
+          example: "Harare North (Borrowdale, Hatfield, Glen Lorne)"
+        serviceNeeded:
+          type: string
+          enum: [housekeeping, cooking, childcare, comprehensive]
+          description: Type of domestic service requested
+        frequency:
+          type: string
+          enum: [full_time, part_time, live_in, live_out]
+          description: Employment schedule preference
+        preferredLanguages:
+          type: array
+          items:
+            type: string
+            enum: [English, Shona, Ndebele]
+          example: ["English", "Shona"]
+        additionalNotes:
+          type: string
+          description: Free-text notes about the placement request
+        status:
+          type: string
+          enum: [pending, reviewed, matched, archived]
+          default: pending
+        createdAt:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp of creation
+
+    TrainingApplication:
+      type: object
+      required:
+        - applicantName
+        - nationalId
+        - gender
+        - age
+        - phone
+        - location
+        - selectedCourseId
+      properties:
+        id:
+          type: string
+          description: Auto-generated unique ID (e.g. "app-1712345678900-def34")
+          example: "app-1712345678900-def34"
+        applicantName:
+          type: string
+          description: Full name of the applicant
+          example: "Chipo Sibanda"
+        nationalId:
+          type: string
+          description: Zimbabwe national ID number
+          example: "63-128471Q-50"
+        gender:
+          type: string
+          enum: [female, male]
+        age:
+          type: integer
+          minimum: 18
+          maximum: 65
+          example: 24
+        phone:
+          type: string
+          description: Zimbabwe mobile number with country code
+          example: "+263 77 112 2334"
+        location:
+          type: string
+          description: Applicant's residential area
+          example: "Harare East (Highlands, Greendale, Chisipite, Ruwa)"
+        selectedCourseId:
+          type: string
+          description: Academy course identifier
+          example: "sm-exec-4"
+        priorExperience:
+          type: string
+          description: Free-text prior work experience
+        status:
+          type: string
+          enum: [submitted, interviewing, enrolled, completed, rejected]
+          default: submitted
+        createdAt:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp of creation
+
+    AcademyCourse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "sm-hb-1"
+        title:
+          type: string
+          example: "Housekeeping & Home Management Excellence"
+        shortDescription:
+          type: string
+        durationWeeks:
+          type: integer
+          example: 6
+        priceUSD:
+          type: integer
+          example: 120
+        modules:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              topics:
+                type: array
+                items:
+                  type: string
+
+paths:
+  /bookings:
+    get:
+      summary: List all booking inquiries
+      description: Returns all employer placement inquiries ordered by creation date descending.
+      security:
+        - firebaseAuth: []
+      responses:
+        "200":
+          description: Array of booking inquiries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BookingInquiry"
+    post:
+      summary: Create a new booking inquiry
+      description: Submits an employer's request to find a domestic helper.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookingInquiry"
+      responses:
+        "201":
+          description: Booking inquiry created successfully
+        "400":
+          description: Validation error — missing required fields
+
+  /bookings/{id}:
+    patch:
+      summary: Update booking status
+      description: Transition a booking between pending → reviewed → matched → archived.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [pending, reviewed, matched, archived]
+      responses:
+        "200":
+          description: Booking status updated
+    delete:
+      summary: Delete a booking inquiry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Booking deleted
+
+  /academy_applications:
+    get:
+      summary: List all training applications
+      description: Returns all academy applications ordered by creation date descending.
+      security:
+        - firebaseAuth: []
+      responses:
+        "200":
+          description: Array of training applications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TrainingApplication"
+    post:
+      summary: Create a new training application
+      description: Submits a candidate's application to enroll in the Smart Maids training academy.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TrainingApplication"
+      responses:
+        "201":
+          description: Application created successfully
+        "400":
+          description: Validation error — missing required fields
+
+  /academy_applications/{id}:
+    patch:
+      summary: Update application status
+      description: Transition an application between submitted → interviewing → enrolled → completed / rejected.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [submitted, interviewing, enrolled, completed, rejected]
+      responses:
+        "200":
+          description: Application status updated
+    delete:
+      summary: Delete a training application
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Application deleted
