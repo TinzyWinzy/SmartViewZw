@@ -15,6 +15,7 @@ export interface BookingInquiry {
   frequency: 'full_time' | 'part_time' | 'live_in' | 'live_out';
   preferredLanguages: string[]; // Shona, Ndebele, English
   additionalNotes: string;
+  preferredDate?: string;
   status: 'pending' | 'reviewed' | 'matched' | 'archived';
   createdAt: string;
 }

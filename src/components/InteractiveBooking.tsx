@@ -25,7 +25,8 @@ export default function InteractiveBooking({ onBookingSubmit, selectedServiceId 
     shona: true,
     ndebele: false,
     english: true,
-    additionalNotes: ''
+    additionalNotes: '',
+    preferredDate: ''
   });
 
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
@@ -97,7 +98,8 @@ export default function InteractiveBooking({ onBookingSubmit, selectedServiceId 
       serviceNeeded: formData.serviceNeeded,
       frequency: formData.frequency,
       preferredLanguages: languages,
-      additionalNotes: formData.additionalNotes
+      additionalNotes: formData.additionalNotes,
+      preferredDate: formData.preferredDate || undefined
     });
 
     setIsSubmitSuccess(true);
@@ -107,7 +109,8 @@ export default function InteractiveBooking({ onBookingSubmit, selectedServiceId 
       clientName: '',
       email: '',
       phone: '',
-      additionalNotes: ''
+    additionalNotes: '',
+    preferredDate: ''
     }));
   };
 
@@ -370,6 +373,20 @@ export default function InteractiveBooking({ onBookingSubmit, selectedServiceId 
                       <span className="font-sans text-xs font-semibold text-gray-800">Ndebele</span>
                     </label>
                   </div>
+                </div>
+
+                {/* Preferred start date */}
+                <div className="sm:col-span-2 space-y-2">
+                  <label id="lbl-preferredDate" className="block font-sans text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    Preferred start date <span className="text-gray-400 font-light">(Optional)</span>
+                  </label>
+                  <input
+                    id="booking-preferredDate"
+                    type="date"
+                    value={formData.preferredDate}
+                    onChange={(e) => setFormData({ ...formData, preferredDate: e.target.value })}
+                    className="premium-input bg-white"
+                  />
                 </div>
 
                 {/* Additional notes expectation */}

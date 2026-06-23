@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://smartviewzw.vercel.app/sitemap.xml

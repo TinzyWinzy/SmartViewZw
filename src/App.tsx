@@ -16,6 +16,8 @@ import Services from './components/Services';
 import TrainingAcademy from './components/TrainingAcademy';
 import InteractiveBooking from './components/InteractiveBooking';
 import Testimonials from './components/Testimonials';
+import FAQ from './components/FAQ';
+import CookieConsent from './components/CookieConsent';
 import AdminGate from './components/AdminGate';
 
 const AdminPortal = lazy(() => import('./components/AdminPortal'));
@@ -538,6 +540,9 @@ export default function App() {
               {/* Client and Graduate Testimonials Section */}
               <Testimonials />
 
+              {/* FAQ Section */}
+              <FAQ />
+
               {/* Booking Inquiry Placement Lead form */}
               <InteractiveBooking 
                 onBookingSubmit={handleBookingSubmit} 
@@ -605,6 +610,9 @@ export default function App() {
         </a>
       )}
 
+      {/* Cookie consent banner */}
+      <CookieConsent />
+
       {/* Footer layout */}
       <footer className="bg-slate-900 text-slate-400 py-16 border-t border-slate-800">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -612,7 +620,7 @@ export default function App() {
             
             {/* Logo and brief info */}
             <div className="md:col-span-5 space-y-4">
-              <div href="#" className="flex items-center space-x-3 cursor-pointer">
+              <div className="flex items-center space-x-3">
                 <div className="relative h-10 w-10 overflow-hidden rounded-xl bg-royal-blue flex items-center justify-center shadow-sm">
                   <span className="text-white font-display-modern font-black text-base">S</span>
                 </div>
