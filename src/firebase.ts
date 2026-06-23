@@ -1,5 +1,6 @@
 /// <reference types="vite/client" />
 import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 // Fallback is the auto-provisioned studio Firebase configuration
@@ -16,4 +17,5 @@ const databaseId = import.meta.env.VITE_FIREBASE_FIRESTORE_DATABASE_ID || "ai-st
 
 const app = initializeApp(firebaseConfig);
 
+export const auth = getAuth(app);
 export const db = getFirestore(app, databaseId);

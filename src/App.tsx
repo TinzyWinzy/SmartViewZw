@@ -22,7 +22,10 @@ const AdminPortal = lazy(() => import('./components/AdminPortal'));
 
 import { BookingInquiry, TrainingApplication, ServiceType } from './types';
 import { SERVICE_AREAS } from './data';
-import { db } from './firebase';
+import { db, auth } from './firebase';
+import fbPost1 from './assets/images/467776379_578844414509442_3209053998752476031_n.jpg';
+import fbPost2 from './assets/images/483103368_656929590034257_4554107601167840866_n.jpg';
+import fbPost3 from './assets/images/484032934_657515429975673_1079432024744908613_n.jpg';
 import { collection, doc, setDoc, updateDoc, deleteDoc, onSnapshot, getDocs, writeBatch } from 'firebase/firestore';
 
 // Initial Seed Data for Instant Demonstration
@@ -299,7 +302,7 @@ export default function App() {
       />
 
       {/* Holiday Campaign Notice Scraped from Facebook Page Campaign */}
-      <div className="bg-[#FCF9F2] border-b border-[#EDE3CD] py-3.5 px-4 text-center text-xs text-slate-900 transition-colors duration-200">
+      <div className="bg-[#FCF9F2] border-b border-[#EDE3CD] py-3.5 px-4 pt-[88px] text-center text-xs text-slate-900 transition-colors duration-200">
         <div className="mx-auto max-w-7xl flex flex-col md:flex-row justify-center items-center gap-2 md:gap-4 font-sans">
           <span className="inline-flex items-center gap-1.5 text-gold-dark text-[10px] uppercase tracking-[0.15em] font-extrabold">
             <span className="h-1.5 w-1.5 rounded-full bg-gold-accent animate-pulse"></span>
@@ -342,19 +345,19 @@ export default function App() {
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                   <div className="flex flex-wrap items-center justify-center gap-6">
                     <img
-                      src="/src/assets/images/467776379_578844414509442_3209053998752476031_n.jpg"
+                      src={fbPost1}
                       alt="Smart Maids ZW Facebook post"
                       className="h-20 w-20 rounded-xl object-cover shadow-sm border border-slate-200 hover:scale-105 transition-transform duration-300"
                       loading="lazy"
                     />
                     <img
-                      src="/src/assets/images/483103368_656929590034257_4554107601167840866_n.jpg"
+                      src={fbPost2}
                       alt="Smart Maids ZW Facebook post"
                       className="h-32 w-32 rounded-xl object-cover shadow-sm border border-slate-200 hover:scale-105 transition-transform duration-300"
                       loading="lazy"
                     />
                     <img
-                      src="/src/assets/images/484032934_657515429975673_1079432024744908613_n.jpg"
+                      src={fbPost3}
                       alt="Smart Maids ZW Facebook post"
                       className="h-32 w-32 rounded-xl object-cover shadow-sm border border-slate-200 hover:scale-105 transition-transform duration-300"
                       loading="lazy"
