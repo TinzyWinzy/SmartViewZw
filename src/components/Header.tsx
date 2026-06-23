@@ -31,13 +31,8 @@ export default function Header({ activeTab, setActiveTab, onBookClick }: HeaderP
             onClick={() => handleNav('landing')} 
             className="flex cursor-pointer items-center space-x-3 transition hover:opacity-90"
           >
-            <div className="relative h-11 w-11 overflow-hidden rounded-lg border border-slate-100 bg-white p-0.5 shadow-sm">
-              <img 
-                src="/src/assets/images/smart_maids_logo_1782161550138.jpg" 
-                alt="Smart Maids ZW Logo" 
-                className="h-full w-full object-cover"
-                referrerPolicy="no-referrer"
-              />
+            <div className="relative h-11 w-11 overflow-hidden rounded-lg bg-royal-blue shadow-sm flex items-center justify-center">
+              <span className="text-white font-display-modern font-black text-lg">S</span>
             </div>
             <div>
               <div className="flex items-center space-x-1">

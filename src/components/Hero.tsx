@@ -126,10 +126,11 @@ export default function Hero({ onBookClick, onAcademyClick }: HeroProps) {
             <div className="relative rounded-2xl border border-gray-100 bg-white p-3 shadow-2xl">
               <div className="relative h-[320px] sm:h-[400px] overflow-hidden rounded-xl">
                 <img
-                  src="/src/assets/images/hero_trust_maid_1782161534270.jpg"
-                  alt="Professional friendly maid wearing royal blue uniform in a clean, sunny home"
+                  src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80"
+                  alt="Professional cleaner providing thorough home cleaning service"
                   className="h-full w-full object-cover"
                   referrerPolicy="no-referrer"
+                  loading="eager"
                 />
                 
                 {/* Embedded Floating Trust Element */}

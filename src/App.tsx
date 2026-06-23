@@ -335,6 +335,38 @@ export default function App() {
                 }}
               />
 
+              {/* Social Proof Gallery — From Our Facebook */}
+              <section className="bg-white py-12 border-b border-slate-100">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                  <div className="flex flex-wrap items-center justify-center gap-6">
+                    <img
+                      src="/src/assets/images/467776379_578844414509442_3209053998752476031_n.jpg"
+                      alt="Smart Maids ZW Facebook post"
+                      className="h-20 w-20 rounded-xl object-cover shadow-sm border border-slate-200 hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                    <img
+                      src="/src/assets/images/483103368_656929590034257_4554107601167840866_n.jpg"
+                      alt="Smart Maids ZW Facebook post"
+                      className="h-32 w-32 rounded-xl object-cover shadow-sm border border-slate-200 hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                    <img
+                      src="/src/assets/images/484032934_657515429975673_1079432024744908613_n.jpg"
+                      alt="Smart Maids ZW Facebook post"
+                      className="h-32 w-32 rounded-xl object-cover shadow-sm border border-slate-200 hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                    <div className="text-center">
+                      <p className="font-sans text-[10px] font-bold text-royal-blue uppercase tracking-widest">
+                        Follow us on Facebook
+                      </p>
+                      <p className="font-sans text-[11px] text-slate-500">@smartmaidszw</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
               {/* Three Pillars Services */}
               <Services onServiceSelect={handleServiceClickFromPillar} />
 
@@ -540,13 +572,8 @@ export default function App() {
             {/* Logo and brief info */}
             <div className="md:col-span-5 space-y-4">
               <div href="#" className="flex items-center space-x-3 cursor-pointer">
-                <div className="relative h-10 w-10 overflow-hidden rounded-xl bg-white p-1">
-                  <img 
-                    src="/src/assets/images/smart_maids_logo_1782161550138.jpg" 
-                    alt="Smart Maids ZW Corporate Icon" 
-                    className="h-full w-full object-cover"
-                    referrerPolicy="no-referrer"
-                  />
+                <div className="relative h-10 w-10 overflow-hidden rounded-xl bg-royal-blue flex items-center justify-center shadow-sm">
+                  <span className="text-white font-display-modern font-black text-base">S</span>
                 </div>
                 <div>
                   <h4 className="font-display text-lg font-extrabold tracking-tight text-white leading-tight">
