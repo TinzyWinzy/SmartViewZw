@@ -166,44 +166,42 @@ export default function TrainingAcademy({ onApplySubmit }: TrainingAcademyProps)
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {ACADEMY_COURSES.map((course) => (
-            <div
-              key={course.id}
-              className="group flex flex-col justify-between border border-slate-100 bg-slate-50 rounded-2xl p-6 shadow-sm hover:border-royal-blue/15 hover:bg-white hover:shadow-2xl transition duration-305"
-            >
-              <div>
-                <span className="inline-block py-1 px-2.5 text-[9px] font-mono font-extrabold tracking-widest uppercase bg-royal-light text-royal-blue rounded-md border border-royal-blue/10 mb-4">
-                  Course Code: {course.id.toUpperCase()}
-                </span>
-                <h3 className="font-display text-xl font-bold text-slate-900 leading-snug group-hover:text-royal-blue transition">
-                  {course.title}
-                </h3>
-                <p className="font-sans text-xs text-slate-500 font-light my-3 leading-relaxed">
-                  {course.shortDescription}
-                </p>
+                <div
+                  key={course.id}
+                  className="group premium-card flex flex-col justify-between p-6"
+                >
+                  <div>
+                    <span className="inline-block py-1 px-2.5 text-[9px] font-mono font-extrabold tracking-widest uppercase bg-royal-pale text-royal-deeper rounded-md border border-royal-blue/10 mb-4">
+                      Course Code: {course.id.toUpperCase()}
+                    </span>
+                    <h3 className="font-display text-xl font-bold text-slate-900 leading-snug group-hover:text-royal-blue transition-colors duration-300">
+                      {course.title}
+                    </h3>
+                    <p className="font-sans text-xs text-slate-500 font-light my-3 leading-relaxed">
+                      {course.shortDescription}
+                    </p>
 
-                {/* Badges durations */}
-                <div className="flex items-center space-x-4 border-t border-slate-200/50 pt-4 mt-4 text-[11px] font-sans text-gray-600">
-                  <div className="flex items-center space-x-1">
-                    <Clock className="h-3.5 w-3.5 text-royal-blue shrink-0" />
-                    <span>{course.durationWeeks} Weeks</span>
+                    <div className="flex items-center space-x-4 border-t border-slate-100 pt-4 mt-4 text-[11px] font-sans text-gray-600">
+                      <div className="flex items-center gap-1.5">
+                        <Clock className="h-3.5 w-3.5 text-royal-blue shrink-0" />
+                        <span>{course.durationWeeks} Weeks</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <DollarSign className="h-3.5 w-3.5 text-gold-dark shrink-0" />
+                        <span className="font-bold text-gray-900">${course.priceUSD} USD</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center space-x-1">
-                    <DollarSign className="h-3.5 w-3.5 text-gold-dark shrink-0" />
-                    <span className="font-bold text-gray-900">${course.priceUSD} USD</span>
-                  </div>
+
+                  <button
+                    id={`view-course-${course.id}`}
+                    onClick={() => setSelectedCourse(course)}
+                    className="group/btn mt-6 flex items-center justify-center gap-1.5 w-full bg-white hover:bg-royal-blue border border-slate-200 hover:border-royal-blue rounded-xl py-2.5 font-sans text-xs font-semibold text-gray-700 hover:text-white transition-all duration-200 active:scale-[0.98]"
+                  >
+                    <BookOpen className="h-4 w-4 transition-transform duration-200 group-hover/btn:scale-110" />
+                    <span>View Syllabus modules</span>
+                  </button>
                 </div>
-              </div>
-
-              {/* View Modules CTA Button */}
-              <button
-                id={`view-course-${course.id}`}
-                onClick={() => setSelectedCourse(course)}
-                className="mt-6 flex items-center justify-center gap-1.5 w-full bg-white group-hover:bg-royal-blue hover:text-white group-hover:text-white border border-slate-200 group-hover:border-royal-blue rounded-xl py-2.5 font-sans text-xs font-semibold text-gray-700 transition duration-200"
-              >
-                <BookOpen className="h-4 w-4" />
-                <span>View Syllabus modules</span>
-              </button>
-            </div>
           ))}
         </div>
       </div>
@@ -263,7 +261,7 @@ export default function TrainingAcademy({ onApplySubmit }: TrainingAcademyProps)
                     placeholder="e.g. Tendai Gertrude Chiminya"
                     value={formData.applicantName}
                     onChange={(e) => setFormData({ ...formData, applicantName: e.target.value })}
-                    className="w-full rounded-xl border border-gray-300 px-4 py-3 font-sans text-sm focus:border-royal-blue focus:outline-none"
+                    className="premium-input"
                   />
                 </div>
 
@@ -279,7 +277,7 @@ export default function TrainingAcademy({ onApplySubmit }: TrainingAcademyProps)
                     placeholder="e.g. 63-128471Q-50"
                     value={formData.nationalId}
                     onChange={(e) => setFormData({ ...formData, nationalId: e.target.value })}
-                    className="w-full rounded-xl border border-gray-300 px-4 py-3 font-sans text-sm focus:border-royal-blue focus:outline-none"
+                    className="premium-input"
                   />
                 </div>
 
@@ -292,7 +290,7 @@ export default function TrainingAcademy({ onApplySubmit }: TrainingAcademyProps)
                     id="applicant-gender"
                     value={formData.gender}
                     onChange={(e) => setFormData({ ...formData, gender: e.target.value as 'female' | 'male' })}
-                    className="w-full rounded-xl border border-gray-300 px-4 py-3 font-sans text-sm bg-white focus:border-royal-blue focus:outline-none"
+                    className="premium-input bg-white"
                   >
                     <option value="female">Female</option>
                     <option value="male">Male</option>
@@ -312,7 +310,7 @@ export default function TrainingAcademy({ onApplySubmit }: TrainingAcademyProps)
                     required
                     value={formData.age}
                     onChange={(e) => setFormData({ ...formData, age: parseInt(e.target.value) || 18 })}
-                    className="w-full rounded-xl border border-gray-300 px-4 py-3 font-sans text-sm focus:border-royal-blue focus:outline-none"
+                    className="premium-input"
                   />
                 </div>
 
@@ -328,7 +326,7 @@ export default function TrainingAcademy({ onApplySubmit }: TrainingAcademyProps)
                     placeholder="e.g. +263 77 444 9860"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full rounded-xl border border-gray-300 px-4 py-3 font-sans text-sm focus:border-royal-blue focus:outline-none"
+                    className="premium-input"
                   />
                 </div>
 

@@ -243,7 +243,7 @@ export default function InteractiveBooking({ onBookingSubmit, selectedServiceId 
                     placeholder="e.g. Dr. Brandon Tino"
                     value={formData.clientName}
                     onChange={(e) => setFormData({ ...formData, clientName: e.target.value })}
-                    className="w-full rounded-xl border border-gray-300 px-4 py-3 font-sans text-sm bg-white focus:border-royal-blue focus:outline-none"
+                    className="premium-input bg-white"
                   />
                 </div>
 
@@ -259,7 +259,7 @@ export default function InteractiveBooking({ onBookingSubmit, selectedServiceId 
                     placeholder="e.g. name@domain.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full rounded-xl border border-gray-300 px-4 py-3 font-sans text-sm bg-white focus:border-royal-blue focus:outline-none"
+                    className="premium-input bg-white"
                   />
                 </div>
 
@@ -275,7 +275,7 @@ export default function InteractiveBooking({ onBookingSubmit, selectedServiceId 
                     placeholder="e.g. +263 77 444 9860"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full rounded-xl border border-gray-300 px-4 py-3 font-sans text-sm bg-white focus:border-royal-blue focus:outline-none"
+                    className="premium-input bg-white"
                   />
                 </div>
 
@@ -288,7 +288,7 @@ export default function InteractiveBooking({ onBookingSubmit, selectedServiceId 
                     id="booking-employerLocation"
                     value={formData.location}
                     onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                    className="w-full rounded-xl border border-gray-300 px-4 py-3 font-sans text-sm bg-white focus:border-royal-blue focus:outline-none"
+                    className="premium-input bg-white"
                   >
                     {SERVICE_AREAS.map((area) => (
                       <option key={area} value={area}>
@@ -307,7 +307,7 @@ export default function InteractiveBooking({ onBookingSubmit, selectedServiceId 
                     id="booking-serviceNeeded"
                     value={formData.serviceNeeded}
                     onChange={(e) => setFormData({ ...formData, serviceNeeded: e.target.value as ServiceType })}
-                    className="w-full rounded-xl border border-gray-300 px-4 py-3 font-sans text-sm bg-white focus:border-royal-blue focus:outline-none"
+                    className="premium-input bg-white"
                   >
                     <option value="housekeeping">🧺 Housekeeping Specialist</option>
                     <option value="cooking">🍳 Culinary &amp; Kitchen Chef</option>
@@ -325,7 +325,7 @@ export default function InteractiveBooking({ onBookingSubmit, selectedServiceId 
                     id="booking-frequency"
                     value={formData.frequency}
                     onChange={(e) => setFormData({ ...formData, frequency: e.target.value as any })}
-                    className="w-full rounded-xl border border-gray-300 px-4 py-3 font-sans text-sm bg-white focus:border-royal-blue focus:outline-none"
+                    className="premium-input bg-white"
                   >
                     <option value="full_time">Full-Time (Daily Commute Shift)</option>
                     <option value="part_time">Part-Time (Scheduled Days)</option>
@@ -383,7 +383,7 @@ export default function InteractiveBooking({ onBookingSubmit, selectedServiceId 
                     placeholder="e.g. Caring for an 18-month-old infant, must know how to prepare low-carb meals, Borrowdale road proximity, is live-out."
                     value={formData.additionalNotes}
                     onChange={(e) => setFormData({ ...formData, additionalNotes: e.target.value })}
-                    className="w-full rounded-xl border border-gray-300 px-4 py-3 font-sans text-sm bg-white focus:border-royal-blue focus:outline-none resize-none"
+                    className="premium-input bg-white resize-none"
                   />
                 </div>
 

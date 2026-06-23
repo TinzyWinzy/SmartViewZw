@@ -133,13 +133,13 @@ export default function AdminPortal({
         {/* Counter cards bento */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           
-          <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-xs">
+          <div className="premium-card p-6">
             <div className="flex justify-between items-start">
               <div>
                 <p className="font-display text-xs text-gray-500 uppercase font-semibold">Employer Inquiries</p>
                 <h3 className="font-display text-3xl font-extrabold text-gray-900 mt-2">{bookings.length}</h3>
               </div>
-              <div className="p-3 bg-royal-light rounded-xl text-royal-blue shrink-0">
+              <div className="p-3 bg-royal-pale rounded-xl text-royal-blue shrink-0">
                 <Users className="h-6 w-6" />
               </div>
             </div>
@@ -149,7 +149,7 @@ export default function AdminPortal({
             </p>
           </div>
 
-          <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-xs">
+          <div className="premium-card p-6">
             <div className="flex justify-between items-start">
               <div>
                 <p className="font-display text-xs text-gray-500 uppercase font-semibold">Academy applicants</p>
@@ -165,7 +165,7 @@ export default function AdminPortal({
             </p>
           </div>
 
-          <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-xs">
+          <div className="premium-card p-6">
             <div className="flex justify-between items-start">
               <div>
                 <p className="font-display text-xs text-gray-500 uppercase font-semibold">Pending Review</p>
@@ -180,7 +180,7 @@ export default function AdminPortal({
             <p className="font-sans text-[10px] text-gray-500 mt-3">Requires priority contact dialing</p>
           </div>
 
-          <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-xs">
+          <div className="premium-card p-6">
             <div className="flex justify-between items-start">
               <div>
                 <p className="font-display text-xs text-gray-500 uppercase font-semibold">Placements matched</p>
@@ -245,7 +245,7 @@ export default function AdminPortal({
                   placeholder="Query profiles..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 pr-4 py-2.5 w-full rounded-xl border border-slate-200 font-sans text-xs focus:outline-none focus:border-royal-blue"
+                  className="premium-input pl-10"
                 />
               </div>
 
@@ -255,7 +255,7 @@ export default function AdminPortal({
                   id="admin-loc-filter"
                   value={locationFilter}
                   onChange={(e) => setLocationFilter(e.target.value)}
-                  className="px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white font-sans text-xs focus:outline-none focus:border-royal-blue w-full sm:w-auto"
+                  className="premium-input w-full sm:w-auto"
                 >
                   <option value="All">All Locations</option>
                   {extractedLocations.map(loc => (
@@ -270,7 +270,7 @@ export default function AdminPortal({
                   id="admin-status-filter"
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className="px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white font-sans text-xs focus:outline-none focus:border-royal-blue w-full sm:w-auto"
+                  className="premium-input w-full sm:w-auto"
                 >
                   <option value="All">All Statuses</option>
                   {activeTab === 'bookings' ? (
