@@ -7,7 +7,7 @@ import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   ShieldCheck, Award, MessageSquare, Compass, CheckCircle, 
-  Sparkle, MapPin, Mail, Phone, Heart, Users, Star, ArrowRight 
+  Sparkle, MapPin, Mail, Phone, Heart, Users, Star, ArrowRight, X 
 } from 'lucide-react';
 
 import Header from './components/Header';
@@ -121,6 +121,11 @@ export default function App() {
   const [bookings, setBookings] = useState<BookingInquiry[]>([]);
   const [applications, setApplications] = useState<TrainingApplication[]>([]);
   const [dbLoading, setDbLoading] = useState(true);
+
+  // Notification bar — dismissible with localStorage persistence
+  const [showNotification, setShowNotification] = useState(() => {
+    return localStorage.getItem('smartmaids_notif_dismissed') !== 'true';
+  });
 
   // Set up real-time Firebase listeners with automatic initial seeding if database is empty
   useEffect(() => {
@@ -301,27 +306,50 @@ export default function App() {
         onBookClick={scrollToBookingForm} 
       />
 
-      {/* Holiday Campaign Notice Scraped from Facebook Page Campaign */}
-      <div className="bg-[#FCF9F2] border-b border-[#EDE3CD] py-3.5 px-4 pt-[88px] text-center text-xs text-slate-900 transition-colors duration-200">
-        <div className="mx-auto max-w-7xl flex flex-col md:flex-row justify-center items-center gap-2 md:gap-4 font-sans">
-          <span className="inline-flex items-center gap-1.5 text-gold-dark text-[10px] uppercase tracking-[0.15em] font-extrabold">
-            <span className="h-1.5 w-1.5 rounded-full bg-gold-accent animate-pulse"></span>
-            Special Announcement
-          </span>
-          <span className="text-slate-700 font-display text-sm italic py-0.5">
-            "This holiday season, let us help you find the perfect professional, trained maid to assist with your household needs."
-          </span>
-          <button 
-            onClick={scrollToBookingForm}
-            className="text-royal-blue hover:text-[#0f172a] text-[10px] uppercase tracking-widest font-black underline decoration-1 underline-offset-4 transition"
-          >
-            Hire a Helper &rarr;
-          </button>
-        </div>
-      </div>
-
       {/* Screen Views rendering */}
-      <main>
+      <main className="pt-16">
+        {/* Campaign notification bar */}
+        {showNotification && (
+          <div className="bg-royal-blue text-white border-b border-white/10">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div className="flex items-center justify-between py-2.5 gap-4">
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="hidden sm:inline-flex h-2 w-2 rounded-full bg-gold-accent animate-pulse shrink-0" />
+                  <span className="font-sans text-[10px] font-bold uppercase tracking-[0.15em] text-gold-accent shrink-0">
+                    Holiday Campaign
+                  </span>
+                  <span className="font-sans text-xs text-white/90 font-light truncate">
+                    Holiday placements booking fast &mdash; secure your professional helper by December 15.
+                  </span>
+                </div>
+                <div className="flex items-center gap-3 shrink-0">
+                  <button
+                    onClick={() => {
+                      setActiveTab('landing');
+                      setTimeout(() => {
+                        document.getElementById('booking-section')?.scrollIntoView({ behavior: 'smooth' });
+                      }, 100);
+                    }}
+                    className="font-sans text-[11px] font-bold uppercase tracking-wider text-white bg-white/10 hover:bg-white/20 px-4 py-1.5 rounded-lg transition-colors"
+                  >
+                    Reserve Now
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowNotification(false);
+                      localStorage.setItem('smartmaids_notif_dismissed', 'true');
+                    }}
+                    className="text-white/60 hover:text-white transition-colors p-1"
+                    aria-label="Dismiss notification"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         <AnimatePresence mode="wait">
           {activeTab === 'landing' && (
             <motion.div
